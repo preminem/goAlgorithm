@@ -4,19 +4,19 @@ import (
 	"fmt"
 )
 
-const MAX = 10
-
 func main() {
 	values := []int{4, 93, 84, 85, 80, 37, 81, 93, 27, 12}
 	fmt.Println(values)
 	// changeSort(values)
 	// bubbleSort(values)
 	// insertSort(values)
-	quickSort(values)
+	// quickSort(values)
+	// fmt.Println(values)
+	mergeSortEntrance(values)
 	fmt.Println(values)
 }
 
-//选择排序，每次选择最小的，O(n^2)
+//选择排序，每次选择最小的，时间复杂度O(n^2)，稳定，空间复杂度O(1)
 //i代表要确定数字的位置，j来寻找最小的数字和i交换
 func changeSort(values []int) {
 	for i := 0; i < len(values)-1; i++ {
@@ -29,7 +29,7 @@ func changeSort(values []int) {
 	fmt.Println(values)
 }
 
-//冒泡排序，O(n^2)
+//冒泡排序，O(n^2)，稳定，空间复杂度O(1)
 //i代表冒泡的轮数和冒出来泡的个数，j代表从第0位开始冒泡交换
 func bubbleSort(values []int) {
 	for i := 0; i < len(values)-1; i++ {
@@ -42,7 +42,7 @@ func bubbleSort(values []int) {
 	fmt.Println(values)
 }
 
-//插入排序，O(n^2)
+//插入排序，O(n^2)，稳定，空间复杂度O(1)
 //i代表待插入的数字，j代表排好序并且待移动的数字
 func insertSort(values []int) {
 	for i := 1; i < len(values); i++ {
@@ -58,7 +58,7 @@ func insertSort(values []int) {
 	fmt.Println(values)
 }
 
-//快速排序On(nlogn)，不稳定
+//快速排序On(nlog2n)，不稳定，空间复杂度O(log2n)~O(n)
 //取左边第一个数做为基数，j先从后往前扫描，i后从前往后扫描，那么相遇的数一定比基数小
 func quickSort(values []int) {
 	left, right := 0, len(values)-1
@@ -79,5 +79,51 @@ func quickSort(values []int) {
 		values[i], values[left] = values[left], values[i]
 		quickSort(values[:i])
 		quickSort(values[i+1:])
+	}
+}
+
+//归并排序，时间复杂度O(nlog2n),稳定，空间复杂度O(n+log2n)≈O(n)
+func mergeSortEntrance(values []int) {
+	temp := make([]int, len(values))
+	mergeSort(values, temp)
+}
+
+//递归的分解数列，再合并数列，就完成了归并排序
+func mergeSort(values []int, temp []int) {
+	if len(values) > 1 {
+		middle := (len(values) - 1) / 2
+		mergeSort(values[:middle+1], temp)
+		mergeSort(values[middle+1:], temp)
+		mergeArray(values, middle, temp)
+	}
+}
+
+//将values[:middle+1]和values[middle+1:]两段有序数组借助temp辅助空间合并成完整有序数组，复杂度O(n)
+func mergeArray(values []int, middle int, temp []int) {
+	i, j, k := 0, middle+1, 0
+	for i <= middle && j <= len(values)-1 {
+		if values[i] <= values[j] {
+			temp[k] = values[i]
+			k++
+			i++
+		} else {
+			temp[k] = values[j]
+			k++
+			j++
+		}
+	}
+	for i <= middle {
+		temp[k] = values[i]
+		k++
+		i++
+	}
+	for j <= len(values)-1 {
+		temp[k] = values[j]
+		k++
+		j++
+	}
+
+	for ii := 0; ii < k; ii++ {
+		values[ii] = temp[ii]
 	}
 }
