@@ -12,7 +12,9 @@ func main() {
 	// insertSort(values)
 	// quickSort(values)
 	// fmt.Println(values)
-	mergeSortEntrance(values)
+	// mergeSortEntrance(values)
+	// fmt.Println(values)
+	shellSort(values)
 	fmt.Println(values)
 }
 
@@ -125,5 +127,31 @@ func mergeArray(values []int, middle int, temp []int) {
 
 	for ii := 0; ii < k; ii++ {
 		values[ii] = temp[ii]
+	}
+}
+
+//希尔排序，时间复杂度不好估计，不稳定，空间复杂度O(1)
+func shellSort(values []int) {
+	//初始化增量
+	increment := len(values) + 1
+	for increment > 1 {
+		//每次减小增量
+		increment = increment/3 + 1
+		//对每个划分进行直接插入排序
+		for i := increment; i < len(values); i++ {
+			//一次插入
+			if values[i] < values[i-increment] {
+				temp := values[i]
+				var j int
+				for j = i - increment; j >= increment && values[j] > temp; j -= increment {
+					values[j+increment] = values[j]
+				}
+				values[j+increment] = temp
+			}
+		}
+		//直到增量为1
+		if increment == 1 {
+			break
+		}
 	}
 }
