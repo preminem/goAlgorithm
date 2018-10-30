@@ -14,7 +14,9 @@ func main() {
 	// fmt.Println(values)
 	// mergeSortEntrance(values)
 	// fmt.Println(values)
-	shellSort(values)
+	// shellSort(values)
+	// fmt.Println(values)
+	HeapSort(values)
 	fmt.Println(values)
 }
 
@@ -151,6 +153,48 @@ func shellSort(values []int) {
 		}
 		//直到增量为1
 		if increment == 1 {
+			break
+		}
+	}
+}
+
+//堆排序，时间复杂度O(nlog2n),不稳定，空间复杂度O(1)
+func HeapSort(values []int) {
+	//将无序序列构建成一个堆，升序选择大顶堆，降序选择小顶堆
+	buildHeap(values)
+	for i := len(values); i > 1; i-- {
+		//将堆顶元素与末尾元素交换，最大元素沉到数组末端
+		values[0], values[i-1] = values[i-1], values[0]
+		//重新调整结构，使其满足堆定义，然后继续交换堆顶元素与当前末尾元素，反复执行调整+交换步骤，直到整个序列有序。
+		adjustHeap(values[:i-1], 0)
+	}
+}
+
+func buildHeap(values []int) {
+	for i := len(values); i >= 0; i-- {
+		adjustHeap(values, i)
+	}
+}
+
+//调整pos位置的结点,pos与child的交换可能导致混乱，因此设置child为新的pos继续调整
+func adjustHeap(values []int, pos int) {
+	node := pos
+	length := len(values)
+	for node < length {
+		var child int = 0
+		if 2*node+2 < length {
+			if values[2*node+1] > values[2*node+2] {
+				child = 2*node + 1
+			} else {
+				child = 2*node + 2
+			}
+		} else if 2*node+1 < length {
+			child = 2*node + 1
+		}
+		if child > 0 && values[child] > values[node] {
+			values[node], values[child] = values[child], values[node]
+			node = child
+		} else {
 			break
 		}
 	}
