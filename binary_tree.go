@@ -1,4 +1,4 @@
-package main
+package goAlgorithm
 
 //container/list包实现了基本的双向链表功能，包括元素的插入、删除、移动功能
 import (
@@ -80,6 +80,10 @@ func posOrderRecu(node *BinaryTree) {
 	fmt.Println(node.Value)
 }
 
+//1.若栈非空输出根节点，并出栈
+//2、将右节点压栈（如果存在）
+//3、将左节点压栈（如果存在）
+//4、重复第1步直到栈空
 func preOrder(node *BinaryTree) {
 	stack := MyStack{List: list.New()}
 	stack.push(node)
@@ -100,6 +104,8 @@ func preOrder(node *BinaryTree) {
 	}
 }
 
+//1、如果栈顶元素非空且左节点存在，将其入栈，重复该过程。若不存在则进入第2步
+//2、若栈非空，输出栈顶元素并出栈。判断刚出栈的元素的右节点是否存在，不存在重复第2步，存在则将右节点入栈，跳至第1步
 func inOrder(node *BinaryTree) {
 	stack := MyStack{List: list.New()}
 	current := node
@@ -116,6 +122,8 @@ func inOrder(node *BinaryTree) {
 	}
 }
 
+//1、如果栈顶元素非空且左节点存在，将其入栈，重复该过程。若不存在则进入第2步（该过程和中序遍历一致）
+//2、如果上一次出栈节点是当前节点的右节点，或者当前节点不存在右节点，就将当前节点输出，并出栈。否则将右节点压栈。跳至第1步
 func postOrder(node *BinaryTree) {
 	stack1, stack2 := MyStack{List: list.New()}, MyStack{List: list.New()}
 	stack1.push(node)
@@ -192,34 +200,4 @@ func levelTreeOrder(node *Tree) {
 		}
 
 	}
-}
-
-func preOrderToStr(node *BinaryTree) (ret string) {
-	if node == nil {
-		return "#!"
-	}
-
-	ret += fmt.Sprintf("%d!", node.Value)
-	ret += preOrderToStr(node.Left)
-	ret += preOrderToStr(node.Right)
-	return ret
-}
-
-func strToBinaryTree(arr []string, index *int) *BinaryTree {
-	if *index >= len(arr) {
-		return nil
-	}
-
-	if arr[*index] == "#" {
-		*index++
-		return nil
-	}
-
-	node := &BinaryTree{}
-	node.Value = arr[*index]
-	*index++
-
-	node.Left = strToBinaryTree(arr, index)
-	node.Right = strToBinaryTree(arr, index)
-	return node
 }
