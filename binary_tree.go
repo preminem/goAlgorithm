@@ -1,114 +1,225 @@
-package goAlgorithm
+package main
 
+//container/list包实现了基本的双向链表功能，包括元素的插入、删除、移动功能
 import (
+	"container/list"
 	"fmt"
-	"reflect"
+	"strings"
 )
 
-// 二叉树定义
+type MyStack struct {
+	List *list.List
+}
+
+type MyQueue struct {
+	List *list.List
+}
+
 type BinaryTree struct {
-	Data   interface{}
-	Lchild *BinaryTree
-	Rchild *BinaryTree
+	Value interface{}
+	Left  *BinaryTree
+	Right *BinaryTree
 }
 
-// 构造方法
-func NewBinaryTree(data interface{}) *BinaryTree {
-	return &BinaryTree{Data: data}
+type Tree struct {
+	Value    interface{}
+	Children []*Tree
 }
 
-//先序遍历，递归
-func (bt *BinaryTree) PreTraverse(t *TreeNode) {
-	if t != nil {
-		fmt.Printf("%d/", t.Value)
-		PreTraverse(t.Left)
-		PreTraverse(t.Right)
+func (stack *MyStack) pop() interface{} {
+	if elem := stack.List.Back(); elem != nil {
+		stack.List.Remove(elem)
+		return elem.Value
+	}
+	return nil
+}
+
+func (stack *MyStack) push(elem interface{}) {
+	stack.List.PushBack(elem)
+}
+
+func (queue *MyQueue) pop() interface{} {
+	if elem := queue.List.Front(); elem != nil {
+		queue.List.Remove(elem)
+		return elem.Value
+	}
+	return nil
+}
+
+func (queue *MyQueue) push(elem interface{}) {
+	queue.List.PushBack(elem)
+}
+
+func preOrderRecur(node *BinaryTree) {
+	if node == nil {
+		return
+	}
+
+	fmt.Println(node.Value)
+	preOrderRecur(node.Left)
+	preOrderRecur(node.Right)
+}
+
+func inOrderRecu(node *BinaryTree) {
+	if node == nil {
+		return
+	}
+
+	inOrderRecu(node.Left)
+	fmt.Println(node.Value)
+	inOrderRecu(node.Right)
+}
+
+func posOrderRecu(node *BinaryTree) {
+	if node == nil {
+		return
+	}
+
+	posOrderRecu(node.Left)
+	posOrderRecu(node.Right)
+	fmt.Println(node.Value)
+}
+
+func preOrder(node *BinaryTree) {
+	stack := MyStack{List: list.New()}
+	stack.push(node)
+
+	elem := stack.pop()
+	for elem != nil {
+		node, _ := elem.(*BinaryTree)
+
+		fmt.Println(node.Value)
+		if right := node.Right; right != nil {
+			stack.push(right)
+		}
+		if left := node.Left; left != nil {
+			stack.push(left)
+		}
+
+		elem = stack.pop()
 	}
 }
 
-// 先序遍历，非递归
-func (bt *BinaryTree) PreStackTraverse() []interface{} {
-	t := bt
-	stack := NewStack(reflect.TypeOf(bt))
-	res := make([]interface{}, 0)
-	for t != nil || !stack.Empty() {
-		for t != nil {
-			res = append(res, t.Data)
-			stack.Push(t)
-			t = t.Lchild
-		}
-		if !stack.Empty() {
-			v, _ := stack.Pop()
-			t = v.(*BinaryTree)
-			t = t.Rchild
-		}
-	}
-	return res
-}
+func inOrder(node *BinaryTree) {
+	stack := MyStack{List: list.New()}
+	current := node
 
-//中序遍历，递归
-func (bt *BinaryTree) MidTraverse(t *TreeNode) {
-	if t != nil {
-		MidTraverse(t.Left)
-		fmt.Printf("%d/", t.Value)
-		MidTraverse(t.Right)
+	for stack.List.Len() > 0 || current != nil {
+		if current != nil {
+			stack.push(current)
+			current = current.Left
+		} else {
+			current = stack.pop().(*BinaryTree)
+			fmt.Println(current.Value)
+			current = current.Right
+		}
 	}
 }
 
-// 中序遍历
-func (bt *BinaryTree) MidStackTraverse() []interface{} {
-	t := bt
-	stack := NewStack(reflect.TypeOf(bt))
-	res := make([]interface{}, 0)
-	for t != nil || !stack.Empty() {
-		for t != nil {
-			stack.Push(t)
-			t = t.Lchild
+func postOrder(node *BinaryTree) {
+	stack1, stack2 := MyStack{List: list.New()}, MyStack{List: list.New()}
+	stack1.push(node)
+
+	for stack1.List.Len() > 0 {
+		elem := stack1.pop().(*BinaryTree)
+		stack2.push(elem)
+
+		if elem.Left != nil {
+			stack1.push(elem.Left)
 		}
-		if !stack.Empty() {
-			v, _ := stack.Pop()
-			t = v.(*BinaryTree)
-			res = append(res, t.Data)
-			t = t.Rchild
+
+		if elem.Right != nil {
+			stack1.push(elem.Right)
 		}
 	}
-	return res
-}
 
-//后序遍历，递归
-func (bt *BinaryTree) PostTraverse(t *TreeNode) {
-	if t != nil {
-		PostTraverse(t.Left)
-		PostTraverse(t.Right)
-		fmt.Printf("%d/", t.Value)
+	for stack2.List.Len() > 0 {
+		elem := stack2.pop().(*BinaryTree)
+		fmt.Println(elem.Value)
 	}
 }
 
-// 后续遍历，非递归
-func (bt *BinaryTree) PostStackTraverse() []interface{} {
-	t := bt
-	stack := NewStack(reflect.TypeOf(bt))
-	s := NewStack(reflect.TypeOf(true))
-	res := make([]interface{}, 0)
-	for t != nil || !stack.Empty() {
-		for t != nil {
-			stack.Push(t)
-			s.Push(false)
-			t = t.Lchild
+func levelOrder(node *BinaryTree) {
+	var nlast *BinaryTree
+	last := node
+	level := 1
+	queue := MyQueue{List: list.New()}
+
+	fmt.Println(fmt.Sprintf("-----this is %d level-----", level))
+	queue.push(node)
+	for queue.List.Len() > 0 {
+		node := queue.pop().(*BinaryTree)
+
+		if node.Left != nil {
+			queue.push(node.Left)
+			nlast = node.Left
 		}
-		for flag, _ := s.Top(); !stack.Empty() && flag.(bool); {
-			s.Pop()
-			v, _ := stack.Pop()
-			res = append(res, v.(*BinaryTree).Data)
-			flag, _ = s.Top()
+
+		if node.Right != nil {
+			queue.push(node.Right)
+			nlast = node.Right
 		}
-		if !stack.Empty() {
-			s.Pop()
-			s.Push(true)
-			v, _ := stack.Top()
-			t = v.(*BinaryTree)
-			t = t.Rchild
+
+		fmt.Println(node.Value)
+		if last == node && (node.Left != nil || node.Right != nil) {
+			last = nlast
+			level++
+			fmt.Println()
+			fmt.Println(fmt.Sprintf("-----this is %d level-----", level))
 		}
 	}
-	return res
+}
+
+func levelTreeOrder(node *Tree) {
+	var nlast *Tree
+	last := node
+	queue := MyQueue{List: list.New()}
+	queue.push(node)
+
+	for queue.List.Len() > 0 {
+		node := queue.pop().(*Tree)
+
+		for _, elem := range node.Children {
+			queue.push(elem)
+			nlast = elem
+		}
+
+		fmt.Println(node.Value)
+
+		if last == node {
+			last = nlast
+			fmt.Println()
+		}
+
+	}
+}
+
+func preOrderToStr(node *BinaryTree) (ret string) {
+	if node == nil {
+		return "#!"
+	}
+
+	ret += fmt.Sprintf("%d!", node.Value)
+	ret += preOrderToStr(node.Left)
+	ret += preOrderToStr(node.Right)
+	return ret
+}
+
+func strToBinaryTree(arr []string, index *int) *BinaryTree {
+	if *index >= len(arr) {
+		return nil
+	}
+
+	if arr[*index] == "#" {
+		*index++
+		return nil
+	}
+
+	node := &BinaryTree{}
+	node.Value = arr[*index]
+	*index++
+
+	node.Left = strToBinaryTree(arr, index)
+	node.Right = strToBinaryTree(arr, index)
+	return node
 }
