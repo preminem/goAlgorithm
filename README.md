@@ -1,1 +1,1 @@
-# golang-learn
+# Algorithm implementation in Go
