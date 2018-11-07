@@ -1,1 +1,1 @@
-# Algorithm implementation in Go
+# Data structure and algorithm implementation in Go
