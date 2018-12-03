@@ -7,9 +7,7 @@ import (
 
 func main() {
 	var chanN chan struct{} = make(chan struct{})
-	defer close(chanN)
 	var chanC chan struct{} = make(chan struct{})
-	defer close(chanC)
 	//var done chan struct{} = make(chan struct{})
 
 	var wg sync.WaitGroup
