@@ -10,13 +10,14 @@ Given "bbbbb", the answer is "b", with the length of 1.
 Given "pwwkew", the answer is "wke", with the length of 3. Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 
 Thought：
-需要一个窗口向右滑动搜索，需要一个映射保存已经出现过的字符位置i避免查询，如果i在窗口内则窗口左边右移至i+1。
-一个长度为256的数组可以替代ASCII字符map。
-
 利用s[left:i+1]来表示s[:i+1]中的包含s[i]的最长子字符串。
 location[s[i]]是字符s[i]在s[:i+1]中倒数第二次出现的序列号。
 当left < location[s[i]]的时候，说明字符s[i]出现了两次。需要设置 left = location[s[i]] + 1, 保证字符s[i]只出现一次。
 利用Location保存字符上次出现的序列号，避免了查询工作。location和Two Sum中的map是一样的作用。
+
+Summary:
+需要一个窗口向右滑动搜索，需要一个映射保存已经出现过的字符位置i避免查询，如果i在窗口内则窗口左边右移至i+1。
+一个长度为256的数组可以替代ASCII字符map。
 */
 
 func lengthOfLongestSubstring(s string) int {
