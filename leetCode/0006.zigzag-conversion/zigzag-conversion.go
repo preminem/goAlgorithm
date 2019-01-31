@@ -41,6 +41,9 @@ r行， r，1×p-r，1×p+r，2×p-r，2×p+r，...
 最后一行， numRow-1, numRow-1+1×p，numRow-1+2×p，...
 只需编程依次处理各行即可。
 
+Complexity：
+时间复杂度：O(n)。
+空间复杂度O(n)。
 */
 
 func convert(s string, numRows int) string {
