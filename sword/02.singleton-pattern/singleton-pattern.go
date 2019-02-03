@@ -1,9 +1,4 @@
-package main
-
-import (
-	"fmt"
-	"sync"
-)
+package problem02
 
 /*
 题：
@@ -23,6 +18,10 @@ import (
 
 sync.Once能确保实例化对象Do方法在多线程环境只运行一次,内部通过互斥锁实现
 */
+import (
+	"fmt"
+	"sync"
+)
 
 type singleton map[string]string
 
@@ -38,14 +37,4 @@ func New() singleton {
 	})
 
 	return instance
-}
-
-func main() {
-	var s singleton = New()
-
-	s["this"] = "that"
-
-	var s2 singleton = New()
-
-	fmt.Println("This is ", s2["this"])
 }
