@@ -16,7 +16,8 @@ import (
 	"fmt"
 )
 
-func findDuplicationNumberInArray(numbers []int, length int) int {
+func findDuplicationNumberInArray(numbers []int) int {
+	length := len(numbers)
 	if length <= 0 {
 		return -1
 	}
