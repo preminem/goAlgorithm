@@ -17,7 +17,10 @@ func find(matrix [][]int, rows, columns, number int) bool {
 		row := 0
 		column := columns - 1
 		for row < rows && column >= 0 {
-			if matrix[row][column] == number {
+			//判断是否越界
+			if matrix[row][column] == nil {
+				return false
+			} else if matrix[row][column] == number {
 				return true
 			} else if matrix[row][column] > number {
 				column--
