@@ -39,9 +39,12 @@ func PrintListReversinglyIteratively(l *ListNode) {
 }
 
 // 方法三：利用递归实现
-func PrintNode(node *ListNode) {
-	if node.Next != nil {
-		PrintNode(node.Next)
+func PrintListReversinglyRecurisively(l *ListNode) {
+	currentNode := l
+	if currentNode != nil {
+		if node.Next != nil {
+			PrintListReversinglyRecurisively(node.Next)
+		}
+		fmt.Printf("%v->", node.val)
 	}
-	fmt.Printf("%v->", node.val)
 }
