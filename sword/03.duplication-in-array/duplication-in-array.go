@@ -12,9 +12,6 @@ package problem03
 如果是，则接着扫描下一个数字；如果不是，则再拿它和第m个数字进行比较。如果它和第m个数字相等，就找到了一个重复的数字；
 如果它和第m个数字不相等，就把第i个数字和第m个数字交换，把m放到属于他的位置。重复这个过程，直到发现一个重复的数字。
 */
-import (
-	"fmt"
-)
 
 func findDuplicationNumberInArray(numbers []int) int {
 	length := len(numbers)

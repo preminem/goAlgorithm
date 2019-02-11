@@ -15,7 +15,6 @@ package problem08
 情况三：如果既没有右子树，并且是它父节点的右子节点,我们沿着指向父节点的指针一直向上遍历，直到找到一个是他父节点的左子节点的节点，
 如果这样的节点存在那么，这个节点的父节点就是我们要找的节点.
 */
-import "fmt"
 
 type Node struct {
 	value  int
@@ -37,6 +36,7 @@ func GetNext(node *Node) *Node {
 	} else if node.parent != nil {
 		cur := node
 		parent := node.parent
+		//如果cur是parent的右子节点就一直向上遍历，直到cur为parent的左子节点。一遍都不遍历即使情况二。
 		for parent != nil && cur == parent.right {
 			cur = parent
 			parent = parent.parent

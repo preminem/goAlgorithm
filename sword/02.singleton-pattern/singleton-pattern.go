@@ -19,7 +19,6 @@ package problem02
 sync.Once能确保实例化对象Do方法在多线程环境只运行一次,内部通过互斥锁实现
 */
 import (
-	"fmt"
 	"sync"
 )
 

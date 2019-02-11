@@ -25,7 +25,7 @@ type ListNode = kit.ListNode
 
 // 方法二：利用栈结构迭代实现
 func PrintListReversinglyIteratively(l *ListNode) {
-	nodes := NewStack() // 申请一个栈
+	nodes := kit.NewStack() // 申请一个栈
 	currentNode := l
 	for currentNode != nil {
 		nodes.Push(currentNode.Val) // 迭代链表，节点依次入栈
@@ -42,9 +42,9 @@ func PrintListReversinglyIteratively(l *ListNode) {
 func PrintListReversinglyRecurisively(l *ListNode) {
 	currentNode := l
 	if currentNode != nil {
-		if node.Next != nil {
-			PrintListReversinglyRecurisively(node.Next)
+		if currentNode.Next != nil {
+			PrintListReversinglyRecurisively(currentNode.Next)
 		}
-		fmt.Printf("%v->", node.val)
+		fmt.Printf("%v->", currentNode.Val)
 	}
 }

@@ -12,7 +12,7 @@ package problem07
 分析到这里，我们即可想到可以使用递归完成重建二叉树。分别对左子树右子树进行递归操作
 */
 import (
-	"fmt"
+    "fmt"
 	"github.com/preminem/goAlgorithm/kit"
 )
 

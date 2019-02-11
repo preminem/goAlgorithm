@@ -10,7 +10,6 @@ package problem04
 如下图显示了查找13的轨迹。首先与右上角15比较，13<15，所以去掉最右1列，然后与11比较，这是13>11，去掉最上面1行…以此类推，最后找到13。
 算法复杂度O(n)，最坏情况需要2n步，即从右上角开始查找，而要查找的目标值在左下角的时候。
 */
-import "fmt"
 
 func find(matrix [][]int, rows, columns, number int) bool {
 	if matrix != nil && rows > 0 && columns > 0 {

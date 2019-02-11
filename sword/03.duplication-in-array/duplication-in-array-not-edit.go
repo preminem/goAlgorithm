@@ -13,7 +13,6 @@ package problem03
 如果1~m的数字超过了m，那么这一半的数字中一定包含了重复数字，否则重复数字在另一半中。继续把包含重复数字的区间一分为二，直到找到重复数字。
 时间复杂度O(nlogn)。这种算法也不能找出所有重复数字。
 */
-import "fmt"
 
 func countRange(numbers []int, start, end int) int {
 	count := 0
