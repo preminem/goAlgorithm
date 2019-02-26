@@ -39,11 +39,11 @@ func matchCore(str, pattern string, pStr, pPattern, strLen, patternLen int) bool
 	if (pPattern + 1) < patternLen && string(pattern[pPattern+1]) == "*" {
 		//第一个字符匹配时有多种匹配方式
 		if patternChar == strChar || (patternChar == "." && strLen != pStr) {
-			// 进入下一个状态
+			// 进入下一个状态(*前面的字符出现1次）
 			enterNext := matchCore(str, pattern, pStr+1, pPattern+2, strLen, patternLen)
-			// 留在当前状态，继续匹配*
+			// 留在当前状态，继续匹配*(*前面的字符出现多次）
 			stay := matchCore(str, pattern, pStr+1, pPattern, strLen, patternLen)
-			// 略过一个*号
+			// 略过一个*号(*前面的字符出现0次）
 			ignore := matchCore(str, pattern, pStr, pPattern+2, strLen, patternLen)
 
 			return enterNext || stay || ignore
