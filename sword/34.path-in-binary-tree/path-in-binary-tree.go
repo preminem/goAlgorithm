@@ -8,6 +8,9 @@ import "fmt"
 输入一颗二叉树和一个整数，打印出来二叉树中节点值的和为输入整数的所有路径。
 从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。
 
+//
+分析：
+用先序遍历
  */
 
 type TreeNode struct {
@@ -22,7 +25,7 @@ func FindPath(node *TreeNode, sum int) {
 	}
 
 	currentSum := 0
-	path := []int{}
+	path := make([]int,0)
 	findPath(node, sum, path, &currentSum)
 }
 
@@ -51,7 +54,6 @@ func findPath(node *TreeNode, expectedSum int, path []int, currentSum *int) {
 	// 在返回到父结点之前，在路径上删除当前结点，
 	// 并在currentSum中减去当前结点的值
 	*currentSum -= node.Val
-	i := len(path) - 1
 	// 删除slice最后一个元素
-	path = append(path[:i], path[i+1:]...)
+	path = path[:len(path) - 1]
 }
