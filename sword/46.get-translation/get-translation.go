@@ -38,6 +38,8 @@ func getTranslationCore(str string) int {
 		}
 
 		if i < length-1 {
+			//golang里单引号只能有一个字符，如果输出会返回这个字符的ascii码
+			//-'0'是为了将字符1，2，3...转换为数字1,2,3...
 			digit1 := str[i] - '0'
 			digit2 := str[i+1] - '0'
 			number := digit1*10 + digit2
