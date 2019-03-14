@@ -16,7 +16,7 @@ func Test_Stack(t *testing.T) {
 
 	for i := start; i < end; i++ {
 		s.Push(i)
-		ast.Equal(i-start+1, s.Len(), "Push 后检查 q 的长度。")
+		ast.Equal(i-start+1, s.Len(), "Push 后检查 s 的长度。")
 	}
 
 	for i := end - 1; i >= start; i-- {
