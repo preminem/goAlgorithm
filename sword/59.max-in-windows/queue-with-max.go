@@ -12,3 +12,42 @@ package problem59
 其中两个队列中的数据都是一对值（元素值和其索引）
 同时需要注意出队操作，数据队列出队的同时需要判断其索引是否和当前最大值队列首部索引相同，如果相同则同时也将最大值队列头部出队。
 */
+import (
+	"github.com/preminem/goAlgorithm/kit"
+)
+
+type Queue = kit.Queue
+
+type MyQueue struct {
+	Queue *Queue
+	Deque *Deque
+}
+
+func NewMyQueue() *MyQueue {
+	return &MyQueue{kit.NewQueue(), kit.NewDeque()}
+}
+
+func (q *MyQueue) Push(n int) {
+	for !q.Deque.IsEmpty() && n >= q.Deque.Last() {
+		q.Deque.Pop()
+	}
+	q.Queue.Push(n)
+	q.Deque.Push(n)
+}
+
+func (q *MyQueue) Pop() int {
+	if q.Deque.IsEmpty() {
+		panic("queue is empty")
+	}
+	if q.Deque.First() == q.Queue.Peek() {
+		q.Deque.Pop()
+	}
+	return q.Queue.Pop()
+}
+
+func (q *MyQueue) max() int {
+	if q.Deque.IsEmpty() {
+		panic("queue is empty")
+	}
+	return q.Deque.First()
+}
