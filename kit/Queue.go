@@ -31,3 +31,8 @@ func (q *Queue) Len() int {
 func (q *Queue) IsEmpty() bool {
 	return q.Len() == 0
 }
+
+// Peek 为查看队首元素
+func (q *Queue) Peek() int {
+	return q.nums[0]
+}
