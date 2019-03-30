@@ -43,6 +43,7 @@ func InsertSort(values []int) {
 //取左边第一个数做为基数，j先从后往前扫描，i后从前往后扫描，那么相遇的数一定比基数小
 func QuickSort(values []int) {
 	left, right := 0, len(values)-1
+	//如果数组长度<2则什么都不做
 	if left < right {
 		i, j := left, right
 		for {
