@@ -32,10 +32,6 @@ func permute(nums []int) [][]int {
 	return ans
 }
 
-// 这个方式和我原来的方式相比，
-// 增加了比较的次数
-// 但是，减少了切片生成的次数。
-// 所以，速度会快一些。
 func makePermutation(cur, n int, nums, vector []int, taken []bool, ans *[][]int) {
 	if cur == n {
 		tmp := make([]int, n)
