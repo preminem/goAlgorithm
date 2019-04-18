@@ -1,25 +1,26 @@
-package problem0046
+package problem47
 
 /*
 题目：
-Given a collection of distinct integers, return all possible permutations.
+Given a collection of numbers that might contain duplicates, return all possible unique permutations.
 
-Example:
+For example, [1,1,2] have the following unique permutations:
 
-Input: [1,2,3]
-Output:
 [
-  [1,2,3],
-  [1,3,2],
-  [2,1,3],
-  [2,3,1],
-  [3,1,2],
-  [3,2,1]
+  [1,1,2],
+  [1,2,1],
+  [2,1,1]
 ]
 
+解题思路
+本题和46. Permutations的区别在于，存在重复的数字。根据46题思路，同一个cur下，已经使用过的数字，就不能再使用了。即可
 */
 
-func permute(nums []int) [][]int {
+import "sort"
+
+func permuteUnique(nums []int) [][]int {
+	sort.Ints(nums)
+
 	n := len(nums)
 	// vector 是一组可能的解答
 	vector := make([]int, n)
@@ -41,8 +42,13 @@ func makePermutation(cur, n int, nums, vector []int, taken []bool, ans *[][]int)
 		return
 	}
 
+	used := make(map[int]bool, n-cur)
+
 	for i := 0; i < n; i++ {
-		if !taken[i] {
+
+		if !taken[i] && !used[nums[i]] {
+			used[nums[i]] = true
+
 			// 准备使用 nums[i]，所以，taken[i] == true
 			taken[i] = true
 			// NOTICE: 是 vector[cur]
